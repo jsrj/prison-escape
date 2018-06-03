@@ -29,12 +29,14 @@ public class TextController : MonoBehaviour {
 
         bgmSource.Play();
 
-        queNum = 1;
-        StartCoroutine(GetDialog(queNum, 0));
+        dialog = "";
+        StartCoroutine(GetDialog(1, 0));
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        Debug.Log(string.Format("Dialog Done: {0} | queNum: {1}", dialogDone, queNum));
 
         // For every even frame tick, while dialog length is shorter than the 
         // full message length, add a character from messageArr to dialog.
@@ -64,22 +66,19 @@ public class TextController : MonoBehaviour {
          // Chain que1 to que2 since they are in the same group...
         if (queNum == 1 && dialogDone) 
          {
-            queNum = 2;
-            StartCoroutine(GetDialog(queNum, 1));
+            StartCoroutine(GetDialog(2, 1));
          }
-         // Set dialog to idle state
-         else if (queNum == 2 && dialogDone)
-         {
 
-             queNum = 3;
-            StartCoroutine(GetDialog(queNum, 1));
+         if (queNum == 2 && dialogDone)
+         {
+            StartCoroutine(GetDialog(3, 1));
          }
 
 
         // With each frame, ensure that the UI text matches the dialog's current
         // state, and increment the frame tick counter.
         gameText.text = dialog;
-        tick++;
+        tick = (tick < 9999)? 0 : tick+1;
 	}
 
     IEnumerator GetDialog(int queNumber, int delay) {
@@ -87,8 +86,8 @@ public class TextController : MonoBehaviour {
         // Waits for n amount of seconds before changing dialog where n = delay.
         // As such, this method must be called within StartCoroutine()
         yield return new WaitForSeconds(delay);
-
         dialog = "";
+        messageArr = "".ToCharArray();
         currentIndex = 0;
 
         /* -- Que groups -- */
@@ -123,5 +122,6 @@ public class TextController : MonoBehaviour {
                 DiagFinalLen = que3.Length;
                 break;
         }
+        queNum = queNumber;
     }
 }
