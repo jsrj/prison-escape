@@ -7,29 +7,39 @@ public class TextController : MonoBehaviour {
 
     public Text      gameText;
 
-    private string     dialog = "";
-    private char[] messageArr = new char[2048];
-    private int        queNum = 0;
-    private int          tick = 0;
-    private int  currentIndex = 0;
+    private string      dialog = "";
+    private char[]  messageArr = new char[2048];
+    private int         queNum = 0;
+    private int           tick = 0;
+    private int   currentIndex = 0;
+    private int   DiagFinalLen = 0;
+    private bool    dialogDone = false;
 
 	// Use this for initialization
 	void Start () {
         queNum = 1;
-        GetDialog(queNum);
+        StartCoroutine(GetDialog(queNum, 0));
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("Tick: "+tick);
-        Debug.Log("dialog length: "+dialog.Length);
-        Debug.Log("messageArr length: "+messageArr.Length);
+        //Debug.Log("Tick: "+tick);
+        //Debug.Log("dialog length: "+dialog.Length);
+        //Debug.Log("messageArr length: "+messageArr.Length);
 
         // For every even frame tick, while dialog length is shorter than the 
         // full message length, add a character from messageArr to dialog.
         if (tick % 2 == 0 && dialog.Length < messageArr.Length) {
             dialog += messageArr[currentIndex];
             currentIndex++;
+        }
+
+        // Tracks when a current dialog sequence has finished.
+        // (i.e.) when current dialog length matches que# length.
+        if (dialog.Length == DiagFinalLen) {
+            dialogDone = true;
+        } else {
+            dialogDone = false;
         }
 
         /* Handle dialog changes triggered by player */
@@ -42,29 +52,34 @@ public class TextController : MonoBehaviour {
           * has completed. */
 
          // Chain que1 to que2 since they are in the same group...
-        if (dialog.Length == currentIndex+1 && queNum == 1)
+        if (queNum == 1 && dialogDone) 
          {
-
+            new WaitForSeconds(5);
              queNum = 2;
-             GetDialog(queNum);
+            StartCoroutine(GetDialog(queNum, 3));
          }
          // Set dialog to idle state
          if (queNum == 3)
          {
 
              queNum = 0;
-             GetDialog(queNum);
+            StartCoroutine(GetDialog(queNum, 0));
          }
 
 
         // With each frame, ensure that the UI text matches the dialog's current
         // state, and increment the frame tick counter.
         gameText.text = dialog;
-        tick = (tick >= 1001)? 0 : tick+1;
+        tick++;
 	}
 
-    void GetDialog(int queNumber) {
-        
+    IEnumerator GetDialog(int queNumber, int delay) {
+
+        // Waits for n amount of seconds before changing dialog where n = delay.
+        // As such, this method must be called within StartCoroutine()
+        yield return new WaitForSeconds(delay);
+
+        dialog = "";
         currentIndex = 0;
 
         /* -- Que groups -- */
@@ -79,14 +94,17 @@ public class TextController : MonoBehaviour {
         {
             case 0:
                 messageArr = "".ToCharArray();
+                DiagFinalLen = 0;
                 break;
 
             case 1:
                 messageArr = que1.ToCharArray();
+                DiagFinalLen = que1.Length;
                 break;
 
             case 2:
                 messageArr = que2.ToCharArray();
+                DiagFinalLen = que2.Length;
                 break;
         }
     }
