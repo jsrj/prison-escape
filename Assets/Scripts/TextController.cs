@@ -5,8 +5,12 @@ using UnityEngine.UI;
 
 public class TextController : MonoBehaviour {
 
-    public Text      gameText;
+    // Game Object references
+    public Text          gameText;
+    public AudioClip Terminal_Beep;
+    public AudioSource   beepFile;
 
+    // Local Script properties
     private string      dialog = "";
     private char[]  messageArr = new char[2048];
     private int         queNum = 0;
@@ -17,20 +21,20 @@ public class TextController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        beepFile.clip = Terminal_Beep;
+
         queNum = 1;
         StartCoroutine(GetDialog(queNum, 0));
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log("Tick: "+tick);
-        //Debug.Log("dialog length: "+dialog.Length);
-        //Debug.Log("messageArr length: "+messageArr.Length);
 
         // For every even frame tick, while dialog length is shorter than the 
         // full message length, add a character from messageArr to dialog.
         if (tick % 2 == 0 && dialog.Length < messageArr.Length) {
             dialog += messageArr[currentIndex];
+            beepFile.Play();
             currentIndex++;
         }
 
@@ -54,9 +58,8 @@ public class TextController : MonoBehaviour {
          // Chain que1 to que2 since they are in the same group...
         if (queNum == 1 && dialogDone) 
          {
-            new WaitForSeconds(5);
-             queNum = 2;
-            StartCoroutine(GetDialog(queNum, 3));
+            queNum = 2;
+            StartCoroutine(GetDialog(queNum, 1));
          }
          // Set dialog to idle state
          if (queNum == 3)
