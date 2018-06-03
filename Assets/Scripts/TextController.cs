@@ -68,11 +68,11 @@ public class TextController : MonoBehaviour {
             StartCoroutine(GetDialog(queNum, 1));
          }
          // Set dialog to idle state
-         if (queNum == 3)
+         else if (queNum == 2 && dialogDone)
          {
 
-             queNum = 0;
-            StartCoroutine(GetDialog(queNum, 0));
+             queNum = 3;
+            StartCoroutine(GetDialog(queNum, 1));
          }
 
 
@@ -95,7 +95,9 @@ public class TextController : MonoBehaviour {
 
         // -- Group 1: Greeting --
         string que1 = "Welcome to The Hyperion!";
-        string que2 = "The Hyperion is a prison transport ship.";
+        string que2 = "The Hyperion is a prison transport ship. \n" +
+        " I don't know what you did to end up on it, but I am hoping that doesn't matter now.";
+        string que3 = "I am The Hyperion Artifical Intelligence Lexicon. You can call me HAL.";
 
         // -- Group 2: Rules --
 
@@ -114,6 +116,11 @@ public class TextController : MonoBehaviour {
             case 2:
                 messageArr = que2.ToCharArray();
                 DiagFinalLen = que2.Length;
+                break;
+
+            case 3:
+                messageArr = que3.ToCharArray();
+                DiagFinalLen = que3.Length;
                 break;
         }
     }
