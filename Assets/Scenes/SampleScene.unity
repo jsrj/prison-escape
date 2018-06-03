@@ -158,9 +158,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.2
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -348,7 +348,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 244.87306
+  orthographic size: 270
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -465,7 +465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameText: {fileID: 631774624}
   Terminal_Beep: {fileID: 8300000, guid: b10b9a64772554a86b2058101a903963, type: 3}
-  BGMusic: {fileID: 8300000, guid: c47163dc38ff44cc88bef0ef3adbd344, type: 3}
+  BGMusic: {fileID: 8300000, guid: 19a8c4dcf67df468384678daf41beecf, type: 3}
   bgmSource: {fileID: 410281738}
   beepFile: {fileID: 1222906464}
 --- !u!1 &714502018
