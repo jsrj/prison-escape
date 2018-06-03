@@ -94,8 +94,8 @@ public class TextController : MonoBehaviour {
         /* -- Que groups -- */
 
         // -- Group 1: Greeting --
-        string que1 = "Welcome to Prison Escape!";
-        string que2 = "A classic choose your own adventure style game.";
+        string que1 = "Welcome to The Hyperion!";
+        string que2 = "The Hyperion is a prison transport ship.";
 
         // -- Group 2: Rules --
 
