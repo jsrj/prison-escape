@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class TextController : MonoBehaviour {
 
     // Game Object references
-    public Text          gameText;
+    public Text           gameText;
     public AudioClip Terminal_Beep;
-    public AudioSource   beepFile;
+    public AudioClip       BGMusic;
+    public AudioSource   bgmSource;
+    public AudioSource    beepFile;
 
     // Local Script properties
     private string      dialog = "";
@@ -21,7 +23,11 @@ public class TextController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        beepFile.clip = Terminal_Beep;
+        // Load audio Files
+        bgmSource.clip = BGMusic;
+        beepFile.clip  = Terminal_Beep;
+
+        bgmSource.Play();
 
         queNum = 1;
         StartCoroutine(GetDialog(queNum, 0));
